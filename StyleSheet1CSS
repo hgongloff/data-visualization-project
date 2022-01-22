@@ -1,0 +1,7 @@
+//This stylesheet css sets elements to make design changes including alignment
+
+//MUST BE CREATED SEPARATELY 
+//CAN BE IMPLEMENTED AS INLINE AS WELL
+body {
+    text-align: center;
+}
