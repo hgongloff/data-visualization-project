@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import xlwings as xw
 
 
-wb = xw.Book('DummyData.xlsx')
+wb = xw.Book('data/DummyData.xlsx')
 
 # Viewing available
 # sheets in it
