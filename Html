@@ -2,6 +2,9 @@
 
 //Created as html webpage in visual studio execute by ctrl+ shift + w
 
+//Need to figure out how to separate the text at the <body> so that there is space and the <h1> is at the top of the page
+//Font size adjustments were made inline, spacing adjustments were made using padding inline.
+//can use the style keyword inline to make adjustments to the spacing or use the CSS page to make adjustments
 <!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -12,7 +15,7 @@
 </head>
 <h1>
     Tool to convert files to scatterplot 
-    <body style="background-color:#4b5320;">
+    <body style="background-color:#4b5320; font-size:12px;padding: 30em 0 0 0;">
         <form action="/action_page.php">
             <input type="file" id="myFile" name="filename">
             <button type="button">Convert to Excel Format</button>
@@ -26,7 +29,7 @@
             <option value="Stat 3">Stat 3<option>
             <option value="Stat 4">Stat 4</option>
         </select>
-        <p>Instructions: Put File in , then click the convert button</p>
+        <p style="font-size:20px;">Instructions: Put File in , then click the convert button, if you want a specific stat shown click the drop down menu</p>
     </body>
 </h1>
 
