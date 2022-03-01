@@ -15,6 +15,7 @@
 //Full filepath from your pc works , but we need to figure out how to integrate a folder of these images onto the website.
 
 //4 values for padding first:top, second:right, third:bottom, fourth:left
+//we are using pixels instead of em, pixels are smaller and we can make smaller changes
 <!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
@@ -23,13 +24,13 @@
     <link rel="stylesheet" href="StyleSheet1.css">
     <title>Conversion Tool for scatter plot</title>
 </head>
-<img src="C:\Pictures for project\usmepcom_seal+ffd.png" alt="alternatetexttop" align="top">
-<img src="C:\Pictures for project\usmepcom_seal_bw.png" alt="alternatetextleft" align="left">
-<img src="C:\Pictures for project\usmepcom_seal_c.png" alt="alternatetextright" align="right">
+<img src="C:\Pictures for project\usmepcom_seal+ffd.png" alt="alternatetexttop" align="top" style="padding: 40px 0 0 0;">
+<img src="C:\Pictures for project\usmepcom_seal_bw.png" alt="alternatetextleft" align="left" style="padding: 40px 0 0 0;">
+<img src="C:\Pictures for project\usmepcom_seal_c.png" alt="alternatetextright" align="right" style="padding: 40px 0 0 0;">
 <img src="url3" alt="alternatetextbottom" align="bottom">
 <h1>
     Tool to convert files to scatterplot
-    <body style="background-color:#4b5320; font-size:12px;padding: 30em 0 0 0;  text-align: center;">
+    <body style="background-color:#4b5320; font-size:12px;padding: 30px 0 0 0;  text-align: center;">
         <form action="/action_page.php">
             <input type="file" id="myFile" name="filename">
             <button type="button">Convert to Excel Format</button>
