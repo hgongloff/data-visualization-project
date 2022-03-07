@@ -1,0 +1,52 @@
+/* //This stylesheet css sets elements to make design changes including alignment
+
+//MUST BE CREATED SEPARATELY 
+//CAN BE IMPLEMENTED AS INLINE AS WELL*/
+body {
+  text-align: center;
+}
+
+.dropdown-menu label {
+  display: block;
+}
+
+.multiselect {
+  width: 200px;
+}
+
+.selectBox {
+  position: relative;
+}
+
+.selectBox select {
+  width: 100%;
+  font-weight: bold;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
+.container {
+  border: 2px solid #ccc;
+  width: 300px;
+  height: 100px;
+  overflow-y: scroll;
+}

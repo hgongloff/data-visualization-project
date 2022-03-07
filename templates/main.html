@@ -1,0 +1,56 @@
+<!-- //Web App outline code
+
+//Created as html webpage in visual studio execute by ctrl+ shift + w
+
+//Need to figure out how to separate the text at the <body> so that there is space and the <h1> is at the top of the page
+//Font size adjustments were made inline, spacing adjustments were made using padding inline.
+//can use the style keyword inline to make adjustments to the spacing or use the CSS page to make adjustments -->
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <script src="../static/scripts/dropdown.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+      />
+    <title>Conversion Tool for scatter plot</title>
+  </head>
+  <h1>
+    Tool to convert files to scatterplot
+    <body style="background-color: #4b5320; font-size: 12px; padding: 0 0 0 0">
+      <form action="http://localhost:5000/uploaded" method="POST"
+        enctype="multipart/form-data">
+        <input type="file" id="excelFile" name="file" />
+        <button type="submit">Upload Excel File</button>
+      </form>
+
+      <form action="http://localhost:5000/graph" method="POST"
+        enctype="multipart/form-data">
+        <button type="create">Create Graph</button>
+        <img src="../static/images/graph.png" alt="Graph 1" />
+
+        <div class="container">
+          <input type="checkbox" value="B3" name="City" /> Atlanta <br />
+          <input type="checkbox" value="B4" name="City" /> Baltimore <br />
+          <input type="checkbox" value="B5" name="City" /> Chicago <br />
+          <input type="checkbox" value="B6" name="City" /> Columbus <br />
+          <input type="checkbox" value="B7" name="City" /> Dallas <br />
+          <input type="checkbox" value="B8" name="City" /> Fort Jackson <br />
+          <input type="checkbox" value="B9" name="City" /> Fort Lee <br />
+          <input type="checkbox" value="B10" name="City" /> Houston <br />
+          <input type="checkbox" value="B11" name="City" /> Jacksonville <br />
+          <input type="checkbox" value="B12" name="City" /> Los Angeles <br />
+        </div>
+      </form>
+
+
+      <p style="font-size: 20px">
+        Instructions: Put File in , then click the convert button, if you want a
+        specific stat shown click the drop down menu
+      </p>
+    </body>
+  </h1>
+</html>
