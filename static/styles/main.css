@@ -2,25 +2,13 @@
 
 //MUST BE CREATED SEPARATELY 
 //CAN BE IMPLEMENTED AS INLINE AS WELL*/
-body {
-  text-align: center;
-}
-
-.dropdown-menu label {
-  display: block;
-}
 
 .multiselect {
-  width: 200px;
+  width: 20px;
 }
 
-.selectBox {
-  position: relative;
-}
-
-.selectBox select {
-  width: 100%;
-  font-weight: bold;
+.buttons {
+  text-align: center;
 }
 
 .overSelect {
@@ -46,7 +34,20 @@ body {
 
 .container {
   border: 2px solid #ccc;
-  width: 300px;
-  height: 100px;
   overflow-y: scroll;
+  grid-column: 1 / 1;
+  grid-row: 1;
+}
+
+.container_2 {
+  border: 2px solid #ccc;
+  overflow-y: scroll;
+  grid-column: 4;
+  grid-row: 1;
+}
+
+.grid_wrapper {
+  display: grid;
+  grid-template-columns: 400px 400px 400px;
+  grid-gap: 10px;
 }

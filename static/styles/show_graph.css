@@ -1,0 +1,55 @@
+/* //This stylesheet css sets elements to make design changes including alignment
+
+//MUST BE CREATED SEPARATELY 
+//CAN BE IMPLEMENTED AS INLINE AS WELL*/
+
+.multiselect {
+  width: 20px;
+}
+
+.buttons {
+  text-align: center;
+}
+
+.overSelect {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+#checkboxes {
+  display: none;
+  border: 1px #dadada solid;
+}
+
+#checkboxes label {
+  display: block;
+}
+
+#checkboxes label:hover {
+  background-color: #1e90ff;
+}
+
+.container {
+  border: 2px solid #ccc;
+  overflow-y: scroll;
+  grid-column: 1 / 1;
+  grid-row: 1;
+  height: 300px;
+}
+
+.container_2 {
+  border: 2px solid #ccc;
+  overflow-y: scroll;
+  grid-column: 4;
+  grid-row: 1;
+  height: 300px;
+}
+
+.grid_wrapper {
+  display: grid;
+  grid-template-columns: 24% 24% 24% 24%;
+  grid-gap: 10px;
+}

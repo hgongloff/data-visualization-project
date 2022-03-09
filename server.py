@@ -26,7 +26,7 @@ def index():
 #     return render_template('main.html')
 
 
-@app.route('/uploaded', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
         f = request.files['file']
@@ -34,12 +34,12 @@ def upload_file():
         return render_template("main.html")
 
 
-@app.route('/graph', methods=['POST'])
+@app.route('/graph', methods=['GET', 'POST'])
 def create_graph():
     if request.method == 'POST':
-        print(request.form.get('City'))
+        print(request.form.getlist('City'))
         save_graph()
-        return render_template("main.html")
+        return render_template("show_graph.html")
 
 
 @app.route('/user/<name>')

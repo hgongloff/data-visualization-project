@@ -8,9 +8,8 @@
 <!DOCTYPE html>
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-  <head>
+  <head class="head">
     <meta charset="utf-8" />
-    <script src="../static/scripts/dropdown.js"></script>
     <link
       rel="stylesheet"
       type="text/css"
@@ -19,19 +18,22 @@
     <title>Conversion Tool for scatter plot</title>
   </head>
   <h1>
-    Tool to convert files to scatterplot
     <body style="background-color: #4b5320; font-size: 12px; padding: 0 0 0 0">
-      <form action="http://localhost:5000/uploaded" method="POST"
-        enctype="multipart/form-data">
-        <input type="file" id="excelFile" name="file" />
-        <button type="submit">Upload Excel File</button>
-      </form>
+      <div class="buttons">
+        Tool to convert files to scatterplot
+        <form action="http://localhost:5000" method="POST"
+          enctype="multipart/form-data">
+          <input type="file" id="excelFile" name="file" />
+          <button type="submit">Upload Excel File</button>
 
-      <form action="http://localhost:5000/graph" method="POST"
-        enctype="multipart/form-data">
-        <button type="create">Create Graph</button>
-        <img src="../static/images/graph.png" alt="Graph 1" />
+        </form>
 
+        <form action="http://localhost:5000/graph" method="POST"
+          enctype="multipart/form-data">
+          <button type="create">Create Graph</button>
+        </form>
+      </div>
+      <div class="grid_wrapper">
         <div class="container">
           <input type="checkbox" value="B3" name="City" /> Atlanta <br />
           <input type="checkbox" value="B4" name="City" /> Baltimore <br />
@@ -44,7 +46,36 @@
           <input type="checkbox" value="B11" name="City" /> Jacksonville <br />
           <input type="checkbox" value="B12" name="City" /> Los Angeles <br />
         </div>
-      </form>
+
+        <div class="container_2">
+          <input type="checkbox" value="S3" name="Attribute" />
+          Check-In/Check-Out <br />
+          <input type="checkbox" value="S4" name="Attribute" /> Test Loss
+          Compromise
+          <br />
+          <input type="checkbox" value="S5" name="Attribute" /> Total Student
+          Tested
+          <br />
+          <input type="checkbox" value="S6" name="Attribute" /> Drug Specimen
+          Processing
+          <br />
+          <input type="checkbox" value="S7" name="Attribute" /> HIV Sample
+          Processing
+          <br />
+          <input type="checkbox" value="S8" name="Attribute" /> CLIP
+          <br />
+          <input type="checkbox" value="S9" name="Attribute" /> Accuracy of
+          Fee-Basis Provider Work Hour Data
+          <br />
+          <input type="checkbox" value="S10" name="Attribute" /> Citibank CBA
+          <br />
+          <input type="checkbox" value="S11" name="Attribute" /> Citibank IBA
+          <br />
+          <input type="checkbox" value="S12" name="Attribute" /> Timeliness of
+          Awards
+          <br />
+        </div>
+      </div>
 
 
       <p style="font-size: 20px">
