@@ -35,19 +35,27 @@
 .container {
   border: 2px solid #ccc;
   overflow-y: scroll;
-  grid-column: 1 / 1;
+  grid-column: 1;
   grid-row: 1;
+  height: 300px;
+  width: 200px;
+  margin-left: 65%;
+  margin-top: 5%;
 }
 
 .container_2 {
   border: 2px solid #ccc;
   overflow-y: scroll;
-  grid-column: 4;
+  grid-column: 3;
   grid-row: 1;
+  height: 300px;
+  width: 400px;
+  margin-left: 5%;
+  margin-top: 5%;
 }
 
 .grid_wrapper {
   display: grid;
-  grid-template-columns: 400px 400px 400px;
+  grid-template-columns: 33% 33% 33%;
   grid-gap: 10px;
 }

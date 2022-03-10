@@ -15,7 +15,7 @@
             type="text/css"
             href="{{ url_for('static',filename='styles/show_graph.css') }}"
             />
-        <title>Conversion Tool for scatter plot</title>
+        <title>Excel graph plot</title>
     </head>
     <h1>
         <body style="background-color: #4b5320; font-size: 12px; padding: 0 0 0
@@ -58,7 +58,9 @@
                     <input type="checkbox" value="B12" name="City" /> Los
                     Angeles <br />
                 </div>
-                <img src="../static/images/graph.png" alt="Graph 1" />
+                <div class="graph">
+                    <img src="../static/images/graph.png" alt="Graph 1" />
+                </div>
                 <div class="container_2">
                     <input type="checkbox" value="S3" name="Attribute" />
                     Check-In/Check-Out <br />
@@ -98,11 +100,6 @@
             </div>
 
 
-            <p style="font-size: 20px">
-                Instructions: Put File in , then click the convert button, if
-                you want a
-                specific stat shown click the drop down menu
-            </p>
         </body>
     </h1>
 </html>
