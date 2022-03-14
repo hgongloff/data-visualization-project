@@ -35,55 +35,31 @@
         <form action="http://localhost:5000/graph" method="POST"
           enctype="multipart/form-data">
           <button type="create">Create Graph</button>
-        </form>
-      </div>
-      <div class="grid_wrapper">
-        <img src="../static/images/usmepcom_seal_c.png" alt="seal 2"
-          class="seal_c" />
-        <div class="container">
-          <input type="checkbox" value="B3" name="City" /> Atlanta <br />
-          <input type="checkbox" value="B4" name="City" /> Baltimore <br />
-          <input type="checkbox" value="B5" name="City" /> Chicago <br />
-          <input type="checkbox" value="B6" name="City" /> Columbus <br />
-          <input type="checkbox" value="B7" name="City" /> Dallas <br />
-          <input type="checkbox" value="B8" name="City" /> Fort Jackson <br />
-          <input type="checkbox" value="B9" name="City" /> Fort Lee <br />
-          <input type="checkbox" value="B10" name="City" /> Houston <br />
-          <input type="checkbox" value="B11" name="City" /> Jacksonville <br />
-          <input type="checkbox" value="B12" name="City" /> Los Angeles <br />
-        </div>
 
-        <div class="container_2">
-          <input type="checkbox" value="S3" name="Attribute" />
-          Check-In/Check-Out <br />
-          <input type="checkbox" value="S4" name="Attribute" /> Test Loss
-          Compromise
-          <br />
-          <input type="checkbox" value="S5" name="Attribute" /> Total Student
-          Tested
-          <br />
-          <input type="checkbox" value="S6" name="Attribute" /> Drug Specimen
-          Processing
-          <br />
-          <input type="checkbox" value="S7" name="Attribute" /> HIV Sample
-          Processing
-          <br />
-          <input type="checkbox" value="S8" name="Attribute" /> CLIP
-          <br />
-          <input type="checkbox" value="S9" name="Attribute" /> Accuracy of
-          Fee-Basis Provider Work Hour Data
-          <br />
-          <input type="checkbox" value="S10" name="Attribute" /> Citibank CBA
-          <br />
-          <input type="checkbox" value="S11" name="Attribute" /> Citibank IBA
-          <br />
-          <input type="checkbox" value="S12" name="Attribute" /> Timeliness of
-          Awards
-          <br />
         </div>
-        <img src="../static/images/usmepcom_seal+ffd.png" alt="seal 3"
-          class="seal_ffd" />
-      </div>
+        <div class="grid_wrapper">
+          <img src="../static/images/usmepcom_seal_c.png" alt="seal 2"
+            class="seal_c" />
+          <div class="container">
+            {% for i in range(city_count) %}
+            <input type="checkbox" value={city_cells[i]} name="City" />
+            {{city_names[i]}}
+            <br
+              />
+            {% endfor %}
+          </div>
+
+          <div class="container_2">
+            {% for i in range(attribute_count) %}
+            <input type="checkbox" value={{attribute_cells[i]}} name="Attribute"
+              />
+            {{attribute_names[i]}} <br />
+            {% endfor %}
+          </div>
+          <img src="../static/images/usmepcom_seal+ffd.png" alt="seal 3"
+            class="seal_ffd" />
+        </div>
+      </form>
 
 
     </body>

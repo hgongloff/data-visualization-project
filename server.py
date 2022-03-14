@@ -13,17 +13,18 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Create a route decorator
+attribute_names = []
+attribute_cells = []
+
+city_names = []
+city_cells = []
 
 
 @app.route('/')
 def index():
-    return render_template("main.html")
-
-
-# @app.route('/uploader')
-# def upload_file():
-#     return render_template('main.html')
+    return render_template("main.html", attribute_cells=attribute_cells, attribute_names=attribute_names,
+                           attribute_count=len(attribute_names),
+                           city_cells=city_cells, city_names=city_names, city_count=len(city_names))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -31,20 +32,46 @@ def upload_file():
     if request.method == 'POST':
         f = request.files['file']
         f.save(secure_filename(f.filename))
-        return render_template("main.html")
+        city_names, attribute_names = load_data()
+        return render_template("main.html", attribute_cells=attribute_cells, attribute_names=attribute_names,
+                               attribute_count=len(attribute_names),
+                               city_cells=city_cells, city_names=city_names, city_count=len(city_names))
 
 
 @app.route('/graph', methods=['GET', 'POST'])
 def create_graph():
     if request.method == 'POST':
-        print(request.form.getlist('City'))
+        print(request.form.getlist('Attribute'))
         save_graph()
-        return render_template("show_graph.html")
+        city_names, attribute_names = load_data()
+        return render_template("show_graph.html", attribute_cells=attribute_cells, attribute_names=attribute_names,
+                               attribute_count=len(attribute_names),
+                               city_cells=city_cells, city_names=city_names, city_count=len(city_names))
 
 
 @app.route('/user/<name>')
 def user(name):
     return render_template("user.html", username=name)
+
+
+def load_data():
+    wb = xw.Book('DummyData.xlsx')
+
+    # Viewing available
+    # sheets in it
+    wks = xw.sheets
+    print("Available sheets :\n", wks)
+
+    # Selecting a sheet
+    ws = wks[0]
+
+    city_names = ws.range("B3:B67").value
+
+    attribute_names = ws.range("C2:P2").value
+
+    wb.close()
+
+    return city_names, attribute_names
 
 
 def save_graph():
@@ -70,3 +97,5 @@ def save_graph():
     plt.xlabel('City')
     plt.ylabel('Total Points Earned')
     plt.savefig('./static/images/graph.png')
+
+    wb.close()
