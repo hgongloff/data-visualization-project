@@ -32,6 +32,12 @@
 
         </form>
 
+        <label for="graph_type">Choose a graph type:</label>
+        <select name="graph_type" id="graph_type">
+          <option value="Bar">Bar</option>
+          <option value="Line">Line</option>
+        </select>
+
         <form action="http://localhost:5000/graph" method="POST"
           enctype="multipart/form-data">
           <button type="create">Create Graph</button>
@@ -42,7 +48,7 @@
             class="seal_c" />
           <div class="container">
             {% for i in range(city_count) %}
-            <input type="checkbox" value={city_cells[i]} name="City" />
+            <input type="checkbox" value={{city_cells[i]}} name="City" />
             {{city_names[i]}}
             <br
               />
@@ -53,6 +59,7 @@
             {% for i in range(attribute_count) %}
             <input type="checkbox" value={{attribute_cells[i]}} name="Attribute"
               />
+
             {{attribute_names[i]}} <br />
             {% endfor %}
           </div>
