@@ -45,11 +45,12 @@ for attribute_index in attribute_cells:
     attributes.append(ws.range(attribute_index).value)
 
 df = pd.DataFrame(index=cities,
-    columns = attributes)
+                  columns=attributes)
 
 for i in range(3, 68):
     for j in 'CDEFGHIJKLMNOPRST':
-        df.at[ws.range(f'B{i}').value, ws.range(f'{j}2').value] = ws.range(f'{j}{i}').value
+        df.at[ws.range(f'B{i}').value, ws.range(
+            f'{j}2').value] = ws.range(f'{j}{i}').value
 
 
 # city_values = ['D2']
@@ -61,6 +62,12 @@ for i in range(3, 68):
 
 print(df)
 
+df.to_csv(f'static/stored-data/{fiscal_date}')
+
+df2 = pd.read_csv(f'static/stored-data/{fiscal_date}')
+
+print("Here it is")
+print(df2)
 # Selecting a value
 # # from the selected sheet
 # total_points = ws.range("S3:S4").value
