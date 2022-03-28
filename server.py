@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.datastructures import FileStorage
 import pandas as pd
 import matplotlib
+from PIL import Image
 matplotlib.use('Agg')
 
 UPLOAD_FOLDER = './data'
@@ -125,7 +126,10 @@ def save_graph(graph_type, checked_cities, checked_attributes):
     plt.title(f'Cities vs {ws.range(checked_attributes[0]).value}')
     plt.xlabel('Cities')
     plt.ylabel(f'{ws.range(checked_attributes[0]).value}')
+    # Dynamically generate whatever name the user sends
     plt.savefig('./static/images/graph.png')
+    im = Image.open('./static/images/graph.png')
+    im.show()
 
     # checked_attributes.clear()
     # checked_cities.clear()
