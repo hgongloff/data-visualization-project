@@ -68,6 +68,10 @@ df2 = pd.read_csv(f'static/stored-data/{fiscal_date}')
 
 print("Here it is")
 print(df2)
+
+df2.plot()
+
+plt.show()
 # Selecting a value
 # # from the selected sheet
 # total_points = ws.range("S3:S4").value
