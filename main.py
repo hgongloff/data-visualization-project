@@ -110,7 +110,16 @@ def split_dataframe(dataframes, cities, attributes):
     return df2
 
 
+# Split up quarter year string
+def split_fy(fy_string):
+    print(fy_string)
+    new_string = fy_string[4] + fy_string[5] + fy_string[1]
+
+    return new_string
+
 # Called if there is only one dataframe used
+
+
 def make_single_bar_graph(df):
     df.plot.bar()
 
@@ -118,9 +127,8 @@ def make_single_bar_graph(df):
     im = Image.open('./static/images/graph.png')
     im.show()
 
+
 # Called if there is only one dataframe used
-
-
 def make_single_line_graph(df):
     df.plot()
 
@@ -133,10 +141,16 @@ file_names = []
 saved_dataframes = []
 saved_dataframes, file_names = read_saved_data()
 
+fiscal_years = []
+
+for name in file_names:
+    fiscal_years.append(split_fy(name))
+
+print(fiscal_years)
 # print(file_names)
 # print(saved_dataframes)
 
-#df = save_data('DummyData.xlsx', '4QFY20')
+#df = save_data('DummyData.xlsx', '2QFY20')
 
 #print(df.loc["Atlanta", "CLIP"])
 
