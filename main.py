@@ -150,12 +150,12 @@ print(fiscal_years)
 # print(file_names)
 # print(saved_dataframes)
 
-#df = save_data('DummyData.xlsx', '2QFY20')
+df = save_data('DummyData.xlsx', 'Q2FY20')
 
 #print(df.loc["Atlanta", "CLIP"])
 
 
-df = split_dataframe(saved_dataframes, cities=[
-                     "Atlanta", "Baltimore"], attributes=["CLIP", "Total Points Earned"])
+#df = split_dataframe(saved_dataframes, cities=[
+                    # "Atlanta", "Baltimore"], attributes=["CLIP", "Total Points Earned"])
 
-make_single_line_graph(df)
+#make_single_line_graph(df)

@@ -47,6 +47,15 @@
           <img src="../static/images/usmepcom_seal_c.png" alt="seal 2"
             class="seal_c" />
           <div class="container">
+            {% for i in range(excel_count) %}
+            <input type="checkbox" value={{excel_names[i]}} name="Excel" />
+            {{excel_names[i]}}
+            <br
+              />
+            {% endfor %}
+          </div>
+
+          <div class="container_2">
             {% for i in range(city_count) %}
             <input type="checkbox" value={{city_cells[i]}} name="City" />
             {{city_names[i]}}
@@ -55,7 +64,7 @@
             {% endfor %}
           </div>
 
-          <div class="container_2">
+          <div class="container_3">
             {% for i in range(attribute_count) %}
             <input type="checkbox" value={{attribute_cells[i]}} name="Attribute"
               />

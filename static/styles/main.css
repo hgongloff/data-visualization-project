@@ -67,6 +67,16 @@
 .container_2 {
   border: 2px solid #ccc;
   overflow-y: scroll;
+  grid-column: 3;
+  grid-row: 1;
+  height: 300px;
+  width: 300px;
+  margin-top: 5%;
+}
+
+.container_3 {
+  border: 2px solid #ccc;
+  overflow-y: scroll;
   grid-column: 4;
   grid-row: 1;
   height: 300px;
