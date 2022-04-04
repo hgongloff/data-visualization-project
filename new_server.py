@@ -47,6 +47,7 @@ def index():
                            excel_names=excel_names, excel_count=len(excel_names))
 
 
+
 def load_initial_excel_files():
     _saved_dataframes = []
     _file_names = []
@@ -67,4 +68,8 @@ def load_initial_cities_attributes(saved_dataframes):
     _attribute_names = saved_dataframes[0].columns.drop("Unnamed: 0")
     _city_names = saved_dataframes[0].index.values
     return _attribute_names, _city_names
+
+def load_new_excel_file():
+    return
+
 
