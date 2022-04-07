@@ -24,10 +24,23 @@
 
     <body style="background-color: #4b5320; font-size: 12px; padding: 0 0 0 0">
       <div class="buttons">
-        Tool to convert files to scatterplot
+        
         <form action="http://localhost:5000" method="POST"
           enctype="multipart/form-data">
           <input type="file" id="excelFile" name="file" />
+          Quarter
+          <select name="quarter" id="quarter">
+            <option value="Q1">Q1</option>
+            <option value="Q2">Q2</option>
+            <option value="Q3">Q3</option>
+            <option value="Q4">Q4</option>
+            
+            <!-- <option value="Line">Line</option> -->
+          </select>
+          Fiscal Year
+          <input type="number" id="year" name="year" value="00", size="4"><br>
+
+
           <button type="submit">Upload Excel File</button>
 
         </form>

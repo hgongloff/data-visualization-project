@@ -31,9 +31,16 @@ for i in 'CDEFGHIJKLMNOPRST':
     attribute_cells.append(f"{i}2")
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+
     saved_dataframes, excel_names = load_initial_excel_files()
+    print(excel_names)
+
+    if request.method == 'POST':
+        print("Here is a post")
+        print(request.form.get('year'))
+        print(request.form.getlist('quarter'))
 
     attribute_names = []
     city_names = []
