@@ -61,7 +61,7 @@
             class="seal_c" />
           <div class="container">
             {% for i in range(excel_count) %}
-            <input type="checkbox" value={{excel_names[i]}} name="Excel" />
+            <input type="checkbox" value="{{excel_names[i]}}" name="Dataframe" />
             {{excel_names[i]}}
             <br
               />
@@ -70,7 +70,7 @@
 
           <div class="container_2">
             {% for i in range(city_count) %}
-            <input type="checkbox" value={{city_cells[i]}} name="City" />
+            <input type="checkbox" value="{{city_names[i]}}" name="City" />
             {{city_names[i]}}
             <br
               />
@@ -79,7 +79,7 @@
 
           <div class="container_3">
             {% for i in range(attribute_count) %}
-            <input type="checkbox" value={{attribute_cells[i]}} name="Attribute"
+            <input type="checkbox" value="{{attribute_names[i]}}" name="Attribute"
               />
 
             {{attribute_names[i]}} <br />

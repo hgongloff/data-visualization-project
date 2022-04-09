@@ -41,6 +41,9 @@ def index():
         print("Here is a post")
         print(request.form.get('year'))
         print(request.form.getlist('quarter'))
+        print(request.form.getlist('Dataframe'))
+        print(request.form.getlist('City'))
+        print(request.form.getlist('Attribute'))
 
     attribute_names = []
     city_names = []
@@ -48,10 +51,19 @@ def index():
     if saved_dataframes:
         attribute_names, city_names = load_initial_cities_attributes(saved_dataframes)
 
-    return render_template("main.html", attribute_cells=attribute_cells, attribute_names=attribute_names,
-                           attribute_count=len(attribute_names),
-                           city_cells=city_cells, city_names=city_names, city_count=len(city_names),
+    return render_template("main.html", attribute_names=attribute_names,
+                           attribute_count=len(attribute_names), city_names=city_names, city_count=len(city_names),
                            excel_names=excel_names, excel_count=len(excel_names))
+
+@app.route('/graph', methods=['GET', 'POST'])
+def graph_page():
+    if request.method == 'POST':
+        print("Here is a post")
+        print(request.form.get('year'))
+        print(request.form.getlist('quarter'))
+        print(request.form.getlist('Dataframe'))
+        print(request.form.getlist('City'))
+        print(request.form.getlist('Attribute'))
 
 
 
