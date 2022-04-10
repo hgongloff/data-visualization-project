@@ -1,5 +1,6 @@
 import asyncio
 from tabnanny import filename_only
+from attr import attr, attrib
 from matplotlib.transforms import Bbox
 import xlwings as xw
 import matplotlib.pyplot as plt
@@ -103,11 +104,13 @@ def save_data(file_name, fiscal_date):
 
 # Split dataframes into checked cities and attributes
 def split_dataframe(dataframes, cities, attributes):
-    df = dataframes[0]
+    df_list = []
+    for df in dataframes:
+        df_list.append(df.loc[cities, attributes])
 
-    df2 = df.loc[cities, attributes]
+    #df2 = df.loc[cities, attributes]
 
-    return df2
+    return df_list
 
 
 # Split up quarter year string
@@ -136,6 +139,54 @@ def make_single_line_graph(df):
     im = Image.open('./static/images/graph.png')
     im.show()
 
+def make_bar_graph(df_list):
+    df1 = df_list[0]
+    df2 = df_list[1]
+
+    df1['Key'] = "Q2FY20"
+    df2['Key'] = "Q3FY21"
+
+    df3 = pd.concat([df1, df2])
+
+    df_group = df3.groupby(['Cities', 'Key'])
+
+    df_plot = df_group.sum().unstack().plot.bar()
+    plt.savefig('./static/images/graph.png', dpi=120, bbox_inches='tight')
+    im = Image.open('./static/images/graph.png')
+    im.show()
+
+def make_line_graph(df_list, cities, attributes):
+    df1 = df_list[0]
+    df2 = df_list[1]
+
+    #print(df1.iloc[df1[cities[0]]][attributes[0]])
+    #print(df1.index[df1['Cities'==cities[0]]])
+
+    # Go through and find the cities needed to get values for graph
+    for i in range(65):
+        #print(df1.iloc[i].name)
+        if df1.iloc[i].name in cities:
+            print(df1.iloc[i].name)
+            for att in attributes:
+                print(f"attribute: {att} value: {df1.iloc[1][att]}")
+
+
+    #print(df1.iloc[1].name)
+    #print(df1.iloc[1][attributes[0]])
+
+    # df1['Key'] = "Q2FY20"
+    # df2['Key'] = "Q3FY21"
+
+    # df3 = pd.concat([df1, df2])
+
+    # df_group = df3.groupby(['Cities', 'Key'])
+
+    # df_plot = df_group.sum().unstack().plot()
+    plt.savefig('./static/images/graph.png', dpi=120, bbox_inches='tight')
+    im = Image.open('./static/images/graph.png')
+    im.show()
+
+    
 
 file_names = []
 saved_dataframes = []
@@ -156,6 +207,14 @@ print(fiscal_years)
 
 
 df = split_dataframe(saved_dataframes, cities=[
-                     "Atlanta", "Baltimore"], attributes=["CLIP", "Total Points Earned"])
+                     "Atlanta", "Baltimore", "Dallas"], attributes=["CLIP", "Total Points Earned"])
 
-make_single_line_graph(df)
+# make_single_bar_graph(df[0])
+#make_single_line_graph(df[0])
+
+cities = ["Atlanta", "Baltimore", "Dallas"]
+attributes = ["CLIP", "Total Points Earned"]
+
+make_line_graph(saved_dataframes, cities, attributes)
+
+
