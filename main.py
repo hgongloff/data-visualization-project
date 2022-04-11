@@ -186,8 +186,15 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
 
 
     fig, ax = plt.subplots()
+    i = 0
     for city, gp in df_total.groupby('Cities'):
-        gp.plot(x='FYQ', y='CLIP', ax=ax, label=f'{city}')
+        city_att = [f'{city}: CLIP', f'{city}: Total Points Earned']
+        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
+        if i == 0:
+            i = 1
+        else:
+            i = 0 
+        print("did")
 
     print(df_total)
     #new_df = df1.loc[cities, attributes]
@@ -218,7 +225,7 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
 
     # df_plot = df_group.sum().unstack().plot()
     
-    plt.savefig('./static/images/graph.png', dpi=120, bbox_inches='tight')
+    plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
     im.show()
 
@@ -252,7 +259,7 @@ df = split_dataframe(saved_dataframes, fiscal_years, cities=[
 #make_single_line_graph(df[0])
 
 cities = ["Atlanta", "Baltimore", "Dallas"]
-attributes = ["CLIP"]
+attributes = ["CLIP", "Total Points Earned"]
 
 make_line_graph(df, cities, attributes, fiscal_years)
 
