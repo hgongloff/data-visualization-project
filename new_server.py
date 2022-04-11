@@ -85,7 +85,7 @@ def graph_page():
 
             
         df_list = split_dataframe(saved_dataframes, fiscal_years, cities=cities, attributes=attributes)
-        make_line_graph(df_list, cities, attributes, fiscal_years)
+        make_pie_chart(df_list, cities, attributes, fiscal_years)
 
     saved_dataframes, excel_names = load_initial_excel_files()
 
@@ -241,5 +241,34 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
 
     
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+    im = Image.open('./static/images/graph.png')
+    im.show()
+
+
+def make_pie_chart(df_list, cities, attributes, fiscal_years):
+
+    df_total = pd.concat(df_list)
+
+    df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
+
+    print("Here it is")
+    print(df_total)
+
+    df_total = df_total.sort_values("FYQ")
+
+    #df_total = df_total.groupby(['Cities'])
+
+    #df_total.plot(x='FYQ', y=attributes)
+    #df_total.pivot(index='FYQ', columns=attributes, values=attributes).plot()
+
+    city_att = []
+
+    city_labels = []
+
+    
+    df_total[0].plot(kind='pie', subplots=True, figsize=(16,8))
+
+    
+    plt.savefig('./static/images/graph.png', dpi=200)
     im = Image.open('./static/images/graph.png')
     im.show()
