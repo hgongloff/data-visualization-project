@@ -1,4 +1,5 @@
 import asyncio
+from hashlib import new
 from tabnanny import filename_only
 from attr import attr, attrib
 from matplotlib.transforms import Bbox
@@ -24,7 +25,7 @@ def read_saved_data():
     all_files = glob.glob(path + "/*.csv")
     for filename in all_files:
         df = pd.read_csv(filename, index_col=None, header=0)
-        df.set_index("Cities", inplace=True)
+        
         file_names.append(filename[filename.find('Q'):])
         saved_dataframes.append(df)
 
@@ -68,7 +69,7 @@ def save_data(file_name, fiscal_date):
 
     df = pd.DataFrame(
         columns=attributes)
-    df.set_index("Cities")
+    
     for i in range(3, 68):
         df.at[i-3, "Cities"] = ws.range(f'B{i}').value
         for j in 'CDEFGHIJKLMNOPRST':
@@ -84,29 +85,23 @@ def save_data(file_name, fiscal_date):
     # print(df)
     # df.set_index("Cities")
     df.to_csv(f'static/stored-data/{fiscal_date}.csv')
-    print(df)
+    #print(df)
 
     return df
 
-    # df2 = pd.read_csv(f'static/stored-data/{fiscal_date}')
-
-    # print("Here it is")
-    # print(df2)
-
-    # df2 = df2[["Atlanta"]]
-
-    # df2.plot()
-
-    # plt.savefig('./static/images/graph.png')
-    # im = Image.open('./static/images/graph.png')
-    # im.show()
 
 
 # Split dataframes into checked cities and attributes
-def split_dataframe(dataframes, cities, attributes):
+def split_dataframe(dataframes, fiscal_years, cities, attributes):
     df_list = []
     for df in dataframes:
+        df.set_index("Cities", inplace=True)
         df_list.append(df.loc[cities, attributes])
+        #print("done")
+    
+    for i in range(len(df_list)):
+        df_list[i]['FYQ'] = fiscal_years[i]
+        #print(df_list[i])
 
     #df2 = df.loc[cities, attributes]
 
@@ -117,6 +112,11 @@ def split_dataframe(dataframes, cities, attributes):
 def split_fy(fy_string):
     print(fy_string)
     new_string = fy_string[4] + fy_string[5] + fy_string[1]
+
+    return new_string
+
+def convert_qfy(qfy):
+    new_string = f"Q{qfy[2]}FY{qfy[0]}{qfy[1]}"
 
     return new_string
 
@@ -155,20 +155,55 @@ def make_bar_graph(df_list):
     im = Image.open('./static/images/graph.png')
     im.show()
 
-def make_line_graph(df_list, cities, attributes):
+def make_att_label(attributes):
+    att_label = []
+    for att in attributes:
+        att_label.append(f"Baltimor e{att}")
+
+    return att_label
+
+
+def make_line_graph(df_list, cities, attributes, fiscal_years):
     df1 = df_list[0]
     df2 = df_list[1]
+
+    df_total = pd.concat(df_list)
+
+    print(df_total)
+
+    att_label = make_att_label(attributes)
+
+    df_total = df_total.sort_values("FYQ")
+
+    #df_total = df_total.groupby(['Cities'])
+
+    #df_total.plot(x='FYQ', y=attributes)
+    #df_total.pivot(index='FYQ', columns=attributes, values=attributes).plot()
+    new_att = []
+    for att in attributes:
+        for city in cities:
+            new_att.append(f'{att}: {city}')
+
+
+    fig, ax = plt.subplots()
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot(x='FYQ', y='CLIP', ax=ax, label=f'{city}')
+
+    print(df_total)
+    #new_df = df1.loc[cities, attributes]
+
 
     #print(df1.iloc[df1[cities[0]]][attributes[0]])
     #print(df1.index[df1['Cities'==cities[0]]])
 
     # Go through and find the cities needed to get values for graph
-    for i in range(65):
-        #print(df1.iloc[i].name)
-        if df1.iloc[i].name in cities:
-            print(df1.iloc[i].name)
-            for att in attributes:
-                print(f"attribute: {att} value: {df1.iloc[1][att]}")
+    # for i in range(65):
+    #     #print(df1.iloc[i].name)
+    #     if df1.iloc[i].name in cities:
+    #         print(df1.iloc[i].name)
+    #         new_df['Cities']
+    #         for att in attributes:
+    #             print(f"attribute: {att} value: {df1.iloc[1][att]}")
 
 
     #print(df1.iloc[1].name)
@@ -182,6 +217,7 @@ def make_line_graph(df_list, cities, attributes):
     # df_group = df3.groupby(['Cities', 'Key'])
 
     # df_plot = df_group.sum().unstack().plot()
+    
     plt.savefig('./static/images/graph.png', dpi=120, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
     im.show()
@@ -190,6 +226,7 @@ def make_line_graph(df_list, cities, attributes):
 
 file_names = []
 saved_dataframes = []
+
 saved_dataframes, file_names = read_saved_data()
 
 fiscal_years = []
@@ -201,20 +238,22 @@ print(fiscal_years)
 # print(file_names)
 # print(saved_dataframes)
 
-#df = save_data('DummyData.xlsx', 'Q2FY20')
+#temp_df = save_data('DummyData.xlsx', 'Q3FY18')
 
 #print(df.loc["Atlanta", "CLIP"])
 
 
-df = split_dataframe(saved_dataframes, cities=[
+df = split_dataframe(saved_dataframes, fiscal_years, cities=[
                      "Atlanta", "Baltimore", "Dallas"], attributes=["CLIP", "Total Points Earned"])
+
+
 
 # make_single_bar_graph(df[0])
 #make_single_line_graph(df[0])
 
 cities = ["Atlanta", "Baltimore", "Dallas"]
-attributes = ["CLIP", "Total Points Earned"]
+attributes = ["CLIP"]
 
-make_line_graph(saved_dataframes, cities, attributes)
+make_line_graph(df, cities, attributes, fiscal_years)
 
 
