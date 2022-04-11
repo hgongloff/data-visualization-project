@@ -33,6 +33,7 @@ for i in 'CDEFGHIJKLMNOPRST':
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    clear_file = True
 
     if request.method == 'POST':
         print("Here is a post")
@@ -52,8 +53,9 @@ def index():
             else:
                 save_data(uploaded_file.filename, f'FY{year[0]}{quarter}')
 
-        saved_dataframes, excel_names = load_initial_excel_files()
-        print(excel_names)
+    saved_dataframes, excel_names = load_initial_excel_files()
+    print(excel_names)
+    uploaded_file = ''
 
     attribute_names = []
     city_names = []
@@ -61,12 +63,13 @@ def index():
     if saved_dataframes:
         attribute_names, city_names = load_initial_cities_attributes(saved_dataframes)
 
-    return render_template("main.html", attribute_names=attribute_names,
+    return render_template("main.html", attribute_names=attribute_names, clear_file=1,
                            attribute_count=len(attribute_names), city_names=city_names, city_count=len(city_names),
                            excel_names=excel_names, excel_count=len(excel_names))
 
 @app.route('/graph', methods=['GET', 'POST'])
 def graph_page():
+    fiscal_years = []
     if request.method == 'POST':
         print("Here is a post")
         print(request.form.get('year'))
@@ -74,6 +77,22 @@ def graph_page():
         print(request.form.getlist('Dataframe'))
         print(request.form.getlist('City'))
         print(request.form.getlist('Attribute'))
+        cities = request.form.getlist('City')
+        attributes = request.form.getlist('Attribute')
+        saved_dataframes, excel_names = load_initial_excel_files()
+        for name in excel_names:
+            fiscal_years.append(split_fy(name))
+        df_list = split_dataframe(saved_dataframes, fiscal_years, cities=cities, attributes=attributes)
+        make_line_graph(df_list, cities, attributes, fiscal_years)
+
+    saved_dataframes, excel_names = load_initial_excel_files()
+
+    if saved_dataframes:
+        attribute_names, city_names = load_initial_cities_attributes(saved_dataframes)
+
+    return render_template("main.html", attribute_names=attribute_names, clear_file=1,
+                        attribute_count=len(attribute_names), city_names=city_names, city_count=len(city_names),
+                        excel_names=excel_names, excel_count=len(excel_names))
 
 
 
@@ -85,8 +104,7 @@ def load_initial_excel_files():
     all_files = glob.glob(path + "/*.csv")
     for filename in all_files:
         df = pd.read_csv(filename, index_col=None, header=0)
-        df.set_index("Cities", inplace=True)
-        _file_names.append(filename[19:25])
+        _file_names.append(filename[filename.find('F'):])
         _saved_dataframes.append(df)
 
     # print(saved_dataframes)
@@ -151,8 +169,10 @@ def save_data(file_name, fiscal_date):
     return df
 
 def load_initial_cities_attributes(saved_dataframes):
-    _attribute_names = saved_dataframes[0].columns.drop("Unnamed: 0")
-    _city_names = saved_dataframes[0].index.values
+    _attribute_names = saved_dataframes[0].columns.drop(["Unnamed: 0", "Cities"])
+    _city_names = []
+    for i in range(65):
+        _city_names.append(saved_dataframes[0]['Cities'][i])
     return _attribute_names, _city_names
 
 def load_new_excel_file():
@@ -164,6 +184,23 @@ def split_fy(fy_string):
     new_string = fy_string[0:6]
 
     return new_string
+
+# Split dataframes into checked cities and attributes
+def split_dataframe(dataframes, fiscal_years, cities, attributes):
+    df_list = []
+    for df in dataframes:
+        df.set_index("Cities", inplace=True)
+        df_list.append(df.loc[cities, attributes])
+        #print("done")
+    
+    for i in range(len(df_list)):
+        df_list[i]['FYQ'] = fiscal_years[i]
+        #print(df_list[i])
+
+    #df2 = df.loc[cities, attributes]
+    print("Split it")
+    print(df_list[0])
+    return df_list
 
 
 def make_line_graph(df_list, cities, attributes, fiscal_years):

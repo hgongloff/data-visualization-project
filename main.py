@@ -29,9 +29,6 @@ def read_saved_data():
         file_names.append(filename[filename.find('F'):])
         saved_dataframes.append(df)
 
-    print("List")
-    print(saved_dataframes)
-    print(file_names)
     return saved_dataframes, file_names
 
 
@@ -87,6 +84,8 @@ def save_data(file_name, fiscal_date):
     # df.set_index("Cities")
     df.to_csv(f'static/stored-data/{fiscal_date}.csv')
     #print(df)
+    xl = xw.apps.active.api
+    xl.Quit()
 
     return df
 
@@ -158,9 +157,6 @@ def make_bar_graph(df_list):
 
 
 def make_line_graph(df_list, cities, attributes, fiscal_years):
-    df1 = df_list[0]
-    df2 = df_list[1]
-
     df_total = pd.concat(df_list)
 
     print(df_total)
@@ -175,18 +171,20 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
     for att in attributes:
         for city in cities:
             new_att.append(f'{att}: {city}')
-
+    city_att = []
 
     fig, ax = plt.subplots()
     i = 0
     for city, gp in df_total.groupby('Cities'):
-        city_att = [f'{city}: CLIP', f'{city}: Total Points Earned']
-        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
-        if i == 0:
-            i = 1
+        city_att.append(f'{city}: {attributes[i]}')
+        if i == len(attributes):
+            i = 0
         else:
-            i = 0 
+            i = i + 1
         print("did")
+
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
 
     print(df_total)
     
@@ -200,6 +198,7 @@ file_names = []
 saved_dataframes = []
 
 saved_dataframes, file_names = read_saved_data()
+
 
 fiscal_years = []
 
@@ -216,15 +215,15 @@ print(fiscal_years)
 
 
 df = split_dataframe(saved_dataframes, fiscal_years, cities=[
-                     "Atlanta", "Baltimore"], attributes=["CLIP", "Total Points Earned"])
+                     "Atlanta", "Baltimore", "Dallas"], attributes=["CLIP", 'Total Student Tested', "Total Points Earned"])
 
 
 
 # make_single_bar_graph(df[0])
 #make_single_line_graph(df[0])
 
-cities = ["Atlanta", "Baltimore"]
-attributes = ["CLIP", "Total Points Earned"]
+cities = ["Atlanta", "Baltimore", "Dallas"]
+attributes = ["CLIP", 'Total Student Tested', "Total Points Earned"]
 
 make_line_graph(df, cities, attributes, fiscal_years)
 

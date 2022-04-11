@@ -39,6 +39,16 @@
             <!-- <option value="Line">Line</option> -->
           </select><br>
           <input type="file" id="excelFile" name="file" class="file"/>
+          {% if clear_file == 1 %}
+          <script>
+            function clearInputFile() {
+              // document.getElementById('excelFile').value='';
+              // console.log("HEYYY LOGGGER");
+              alert("HELO");
+            }
+          </script>
+            {% endif %}
+
 
           <button type="submit">Upload Excel File</button>
 
@@ -53,7 +63,6 @@
         <form action="http://localhost:5000/graph" method="POST"
           enctype="multipart/form-data">
           <button type="create">Create Graph</button>
-
         </div>
         <div class="grid_wrapper">
           <img src="../static/images/usmepcom_seal_c.png" alt="seal 2"
