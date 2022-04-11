@@ -224,17 +224,20 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
 
     city_att = []
 
+    city_labels = []
+
     fig, ax = plt.subplots()
+    
+    for city, gp in df_total.groupby('Cities'):
+        for i in range(len(attributes)):
+            city_att.append(f'{city}: {attributes[i]}')
+        city_labels.append(city_att)
+        city_att = []
+     
     i = 0
     for city, gp in df_total.groupby('Cities'):
-        city_att.append(f'{city}: {attributes[i]}')
-        if i == len(attributes):
-            i = 0
-        else:
-            i = i + 1
-
-    for city, gp in df_total.groupby('Cities'):
-        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
+        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_labels[i])
+        i = i + 1
 
     
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
