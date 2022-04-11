@@ -26,11 +26,12 @@ def read_saved_data():
     for filename in all_files:
         df = pd.read_csv(filename, index_col=None, header=0)
         
-        file_names.append(filename[filename.find('Q'):])
+        file_names.append(filename[filename.find('F'):])
         saved_dataframes.append(df)
 
-    # print(saved_dataframes)
-    # print(file_names)
+    print("List")
+    print(saved_dataframes)
+    print(file_names)
     return saved_dataframes, file_names
 
 
@@ -104,14 +105,13 @@ def split_dataframe(dataframes, fiscal_years, cities, attributes):
         #print(df_list[i])
 
     #df2 = df.loc[cities, attributes]
-
     return df_list
 
 
 # Split up quarter year string
 def split_fy(fy_string):
     print(fy_string)
-    new_string = fy_string[4] + fy_string[5] + fy_string[1]
+    new_string = fy_string[0:6]
 
     return new_string
 
@@ -155,12 +155,6 @@ def make_bar_graph(df_list):
     im = Image.open('./static/images/graph.png')
     im.show()
 
-def make_att_label(attributes):
-    att_label = []
-    for att in attributes:
-        att_label.append(f"Baltimor e{att}")
-
-    return att_label
 
 
 def make_line_graph(df_list, cities, attributes, fiscal_years):
@@ -170,8 +164,6 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
     df_total = pd.concat(df_list)
 
     print(df_total)
-
-    att_label = make_att_label(attributes)
 
     df_total = df_total.sort_values("FYQ")
 
@@ -197,33 +189,6 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
         print("did")
 
     print(df_total)
-    #new_df = df1.loc[cities, attributes]
-
-
-    #print(df1.iloc[df1[cities[0]]][attributes[0]])
-    #print(df1.index[df1['Cities'==cities[0]]])
-
-    # Go through and find the cities needed to get values for graph
-    # for i in range(65):
-    #     #print(df1.iloc[i].name)
-    #     if df1.iloc[i].name in cities:
-    #         print(df1.iloc[i].name)
-    #         new_df['Cities']
-    #         for att in attributes:
-    #             print(f"attribute: {att} value: {df1.iloc[1][att]}")
-
-
-    #print(df1.iloc[1].name)
-    #print(df1.iloc[1][attributes[0]])
-
-    # df1['Key'] = "Q2FY20"
-    # df2['Key'] = "Q3FY21"
-
-    # df3 = pd.concat([df1, df2])
-
-    # df_group = df3.groupby(['Cities', 'Key'])
-
-    # df_plot = df_group.sum().unstack().plot()
     
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
@@ -251,14 +216,14 @@ print(fiscal_years)
 
 
 df = split_dataframe(saved_dataframes, fiscal_years, cities=[
-                     "Atlanta", "Baltimore", "Dallas"], attributes=["CLIP", "Total Points Earned"])
+                     "Atlanta", "Baltimore"], attributes=["CLIP", "Total Points Earned"])
 
 
 
 # make_single_bar_graph(df[0])
 #make_single_line_graph(df[0])
 
-cities = ["Atlanta", "Baltimore", "Dallas"]
+cities = ["Atlanta", "Baltimore"]
 attributes = ["CLIP", "Total Points Earned"]
 
 make_line_graph(df, cities, attributes, fiscal_years)

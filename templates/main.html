@@ -13,7 +13,7 @@
       type="text/css"
       href="{{ url_for('static',filename='styles/main.css') }}"
       />
-    <title>Excel graph plot</title>
+    <title>MEPS Data Visualization</title>
   </head>
   <h1>
 
@@ -25,7 +25,10 @@
         
         <form action="http://localhost:5000" method="POST"
           enctype="multipart/form-data">
-          <input type="file" id="excelFile" name="file" />
+         
+          Fiscal Year
+          <input type="number" id="year" name="year" value="00", size="4">
+
           Quarter
           <select name="quarter" id="quarter">
             <option value="Q1">Q1</option>
@@ -34,10 +37,8 @@
             <option value="Q4">Q4</option>
             
             <!-- <option value="Line">Line</option> -->
-          </select>
-          Fiscal Year
-          <input type="number" id="year" name="year" value="00", size="4"><br>
-
+          </select><br>
+          <input type="file" id="excelFile" name="file" class="file"/>
 
           <button type="submit">Upload Excel File</button>
 
