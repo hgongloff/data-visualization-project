@@ -186,6 +186,7 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
     for city, gp in df_total.groupby('Cities'):
         gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
 
+    print("dd")
     print(df_total)
     
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
@@ -201,6 +202,8 @@ saved_dataframes, file_names = read_saved_data()
 
 
 fiscal_years = []
+
+
 
 for name in file_names:
     fiscal_years.append(split_fy(name))

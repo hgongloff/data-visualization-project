@@ -79,9 +79,11 @@ def graph_page():
         print(request.form.getlist('Attribute'))
         cities = request.form.getlist('City')
         attributes = request.form.getlist('Attribute')
+        fiscal_years = request.form.getlist('Dataframe')
+        fiscal_years = split_fy(fiscal_years)
         saved_dataframes, excel_names = load_initial_excel_files()
-        for name in excel_names:
-            fiscal_years.append(split_fy(name))
+
+            
         df_list = split_dataframe(saved_dataframes, fiscal_years, cities=cities, attributes=attributes)
         make_line_graph(df_list, cities, attributes, fiscal_years)
 
@@ -179,11 +181,12 @@ def load_new_excel_file():
     return
 
 # Split up quarter year string
-def split_fy(fy_string):
-    print(fy_string)
-    new_string = fy_string[0:6]
+def split_fy(fy_list):
+    new_list = []
+    for fy in fy_list:
+        new_list.append(fy[0:6])
 
-    return new_string
+    return new_list
 
 # Split dataframes into checked cities and attributes
 def split_dataframe(dataframes, fiscal_years, cities, attributes):
@@ -193,7 +196,7 @@ def split_dataframe(dataframes, fiscal_years, cities, attributes):
         df_list.append(df.loc[cities, attributes])
         #print("done")
     
-    for i in range(len(df_list)):
+    for i in range(len(fiscal_years)):
         df_list[i]['FYQ'] = fiscal_years[i]
         #print(df_list[i])
 
@@ -207,30 +210,33 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
 
     df_total = pd.concat(df_list)
 
+    df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
+
+    print("Here it is")
     print(df_total)
 
     df_total = df_total.sort_values("FYQ")
 
-    new_att = []
-    for att in attributes:
-        for city in cities:
-            new_att.append(f'{att}: {city}')
+    #df_total = df_total.groupby(['Cities'])
 
+    #df_total.plot(x='FYQ', y=attributes)
+    #df_total.pivot(index='FYQ', columns=attributes, values=attributes).plot()
+
+    city_att = []
 
     fig, ax = plt.subplots()
     i = 0
     for city, gp in df_total.groupby('Cities'):
-        city_att = [f'{city}: CLIP', f'{city}: Total Points Earned']
-        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
-        if i == 0:
-            i = 1
+        city_att.append(f'{city}: {attributes[i]}')
+        if i == len(attributes):
+            i = 0
         else:
-            i = 0 
-        print("did")
+            i = i + 1
 
-    print(df_total)
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot(x='FYQ', y=attributes, ax=ax, label=city_att)
+
     
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
     im.show()
-
