@@ -39,30 +39,28 @@
             <!-- <option value="Line">Line</option> -->
           </select><br>
           <input type="file" id="excelFile" name="file" class="file"/>
-          {% if clear_file == 1 %}
-          <script>
-            function clearInputFile() {
-              // document.getElementById('excelFile').value='';
-              // console.log("HEYYY LOGGGER");
-              alert("HELO");
-            }
-          </script>
-            {% endif %}
+
 
 
           <button type="submit">Upload Excel File</button>
 
         </form>
 
-        <label for="graph_type">Choose a graph type:</label>
-        <select name="graph_type" id="graph_type">
-          <option value="Bar">Bar</option>
-          <!-- <option value="Line">Line</option> -->
-        </select>
+      <form action="http://localhost:5000/graph" method="POST"
+        enctype="multipart/form-data">
 
-        <form action="http://localhost:5000/graph" method="POST"
-          enctype="multipart/form-data">
+        
+        <label for="graph_type">Choose a graph type:</label>
+        <select name="graph_type" >
+          <option value="Line">Line</option>
+          <option value="Bar">Bar</option>
+          <option value="Pie">Pie</option>
+          <!-- <option value="Line">Line</option> -->
+        </select><br>
+
+       
           <button type="create">Create Graph</button>
+       
         </div>
         <div class="grid_wrapper">
           <img src="../static/images/usmepcom_seal_c.png" alt="seal 2"
