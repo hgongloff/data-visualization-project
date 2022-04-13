@@ -96,6 +96,10 @@ def graph_page():
             if graph_type == 'Line':
                 print(graph_type)
                 make_line_graph(df_list, cities, attributes, fiscal_years)
+            elif graph_type == 'Bar':
+                make_bar_graph(df_list, cities, attributes, fiscal_years)
+            elif graph_type == 'Stacked Bar':
+                make_stacked_bar_graph(df_list, cities, attributes, fiscal_years)
             elif graph_type == 'Pie':
                 make_pie_chart(df_list, cities, attributes, fiscal_years)
 
@@ -260,6 +264,86 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
     im.show()
+
+
+def make_bar_graph(df_list, cities, attributes, fiscal_years):
+
+    df_total = pd.concat(df_list)
+
+    df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
+
+    print("Here it is")
+    print(df_total)
+
+    df_total = df_total.sort_values("FYQ")
+
+    #df_total = df_total.groupby(['Cities'])
+
+    #df_total.plot(x='FYQ', y=attributes)
+    #df_total.pivot(index='FYQ', columns=attributes, values=attributes).plot()
+
+    city_att = []
+
+    city_labels = []
+
+    fig, ax = plt.subplots()
+    
+    for city, gp in df_total.groupby('Cities'):
+        for i in range(len(attributes)):
+            city_att.append(f'{city}: {attributes[i]}')
+        city_labels.append(city_att)
+        city_att = []
+     
+    i = 0
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot.bar(x='FYQ', y=attributes, ax=ax, label=city_labels[i])
+        i = i + 1
+
+    
+    plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+    im = Image.open('./static/images/graph.png')
+    im.show()
+
+
+
+def make_stacked_bar_graph(df_list, cities, attributes, fiscal_years):
+
+    df_total = pd.concat(df_list)
+
+    df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
+
+    print("Here it is")
+    print(df_total)
+
+    df_total = df_total.sort_values("FYQ")
+
+    #df_total = df_total.groupby(['Cities'])
+
+    #df_total.plot(x='FYQ', y=attributes)
+    #df_total.pivot(index='FYQ', columns=attributes, values=attributes).plot()
+
+    city_att = []
+
+    city_labels = []
+
+    fig, ax = plt.subplots()
+    
+    for city, gp in df_total.groupby('Cities'):
+        for i in range(len(attributes)):
+            city_att.append(f'{city}: {attributes[i]}')
+        city_labels.append(city_att)
+        city_att = []
+     
+    i = 0
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot.bar(x='FYQ', y=attributes, ax=ax, label=city_labels[i])
+        i = i + 1
+
+    
+    plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+    im = Image.open('./static/images/graph.png')
+    im.show()
+
 
 
 def make_pie_chart(df_list, cities, attributes, fiscal_years):
