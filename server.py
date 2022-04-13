@@ -107,6 +107,9 @@ def graph_page():
 
     if saved_dataframes:
         attribute_names, city_names = load_initial_cities_attributes(saved_dataframes)
+    else:
+        attribute_names = []
+        city_names = []
 
     new_excel_names = []
     for name in excel_names:
