@@ -1,0 +1,102 @@
+<!-- //Web App outline code
+
+//Created as html webpage in visual studio execute by ctrl+ shift + w
+
+-->
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+  <head class="head">
+    <meta charset="utf-8" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static',filename='styles/main.css') }}"
+      />
+    <title>MEPS Data Visualization</title>
+  </head>
+  <h1>
+
+    <img src="../static/images/usmepcom_seal_bw.png" alt="seal 1"
+      class="seal_bw" />
+
+    <body style="background-color: #4b5320; font-size: 12px; padding: 0 0 0 0">
+      <div class="buttons">
+        
+        <form action="http://localhost:5000" method="POST"
+          enctype="multipart/form-data">
+         
+          Fiscal Year
+          <input type="number" id="year" name="year" value="00", size="4">
+
+          Quarter
+          <select name="quarter" id="quarter">
+            <option value="Q1">Q1</option>
+            <option value="Q2">Q2</option>
+            <option value="Q3">Q3</option>
+            <option value="Q4">Q4</option>
+            
+            <!-- <option value="Line">Line</option> -->
+          </select><br>
+          <input type="file" id="excelFile" name="file" class="file"/>
+
+
+
+          <button type="submit">Upload Excel File</button>
+
+        </form>
+
+      <form action="http://localhost:5000/graph" method="POST"
+        enctype="multipart/form-data">
+
+        
+        <label for="graph_type">Choose a graph type:</label>
+        <select name="graph_type" >
+          <option value="Line">Line</option>
+          <option value="Bar">Bar</option>
+          <option value="Pie">Pie</option>
+          <!-- <option value="Line">Line</option> -->
+        </select><br>
+
+       
+          <button type="create">Create Graph</button>
+       
+        </div>
+        <div class="grid_wrapper">
+          <img src="../static/images/usmepcom_seal_c.png" alt="seal 2"
+            class="seal_c" />
+          <div class="container">
+            {% for i in range(excel_count) %}
+            <input type="checkbox" value="{{excel_names[i]}}" name="Dataframe" />
+            {{excel_names[i]}}
+            <br
+              />
+            {% endfor %}
+          </div>
+
+          <div class="container_2">
+            {% for i in range(city_count) %}
+            <input type="checkbox" value="{{city_names[i]}}" name="City" />
+            {{city_names[i]}}
+            <br
+              />
+            {% endfor %}
+          </div>
+
+          <div class="container_3">
+            {% for i in range(attribute_count) %}
+            <input type="checkbox" value="{{attribute_names[i]}}" name="Attribute"
+              />
+
+            {{attribute_names[i]}} <br />
+            {% endfor %}
+          </div>
+          <img src="../static/images/usmepcom_seal+ffd.png" alt="seal 3"
+            class="seal_ffd" />
+        </div>
+      </form>
+
+
+    </body>
+  </h1>
+</html>
