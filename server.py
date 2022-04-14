@@ -287,15 +287,13 @@ def make_bar_graph(df_list, cities, attributes, fiscal_years):
      
     i = 0
     for city, gp in df_total.groupby('Cities'):
-        if i == 0:
-            gp.plot.bar(x='FYQ', y=attributes, ax=ax, label=city_labels[i])
-
+        gp.plot.bar(x='FYQ', y=attributes, label=city_labels[i])
         i = i + 1
 
     
-    plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
-    im = Image.open('./static/images/graph.png')
-    im.show()
+        plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+        im = Image.open('./static/images/graph.png')
+        im.show()
 
 
 
@@ -303,9 +301,17 @@ def make_stacked_bar_graph(df_list, cities, attributes, fiscal_years):
 
     df_total = pd.concat(df_list)
 
+    print(df_total)
+
     df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
 
+    print(df_total)
+
     df_total = df_total.sort_values("FYQ")
+
+    print("Here it is")
+    print(df_total)
+
 
     city_att = []
 
@@ -318,16 +324,16 @@ def make_stacked_bar_graph(df_list, cities, attributes, fiscal_years):
             city_att.append(f'{city}: {attributes[i]}')
         city_labels.append(city_att)
         city_att = []
-     
     i = 0
     for city, gp in df_total.groupby('Cities'):
-        gp.plot.bar(x='FYQ', y=attributes, ax=ax, label=city_labels[i])
+        gp.plot.bar(x='FYQ', y=attributes, label=city_labels[i], stacked=True)
         i = i + 1
 
     
-    plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
-    im = Image.open('./static/images/graph.png')
-    im.show()
+        plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+        im = Image.open('./static/images/graph.png')
+        im.show()
+    
 
 
 
