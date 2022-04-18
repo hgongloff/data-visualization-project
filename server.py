@@ -93,9 +93,14 @@ def graph_page():
 
         if len(attributes) and len(cities) and len(fiscal_years):
             df_list = split_dataframe(saved_dataframes, fiscal_years, cities=cities, attributes=attributes)
+            attributes.remove('FYQ')
             if graph_type == 'Line':
                 print(graph_type)
                 make_line_graph(df_list, cities, attributes, fiscal_years)
+            elif graph_type == 'Bar':
+                make_bar_graph(df_list, cities, attributes, fiscal_years)
+            elif graph_type == 'Stacked Bar':
+                make_stacked_bar_graph(df_list, cities, attributes, fiscal_years)
             elif graph_type == 'Pie':
                 make_pie_chart(df_list, cities, attributes, fiscal_years)
 
@@ -103,6 +108,9 @@ def graph_page():
 
     if saved_dataframes:
         attribute_names, city_names = load_initial_cities_attributes(saved_dataframes)
+    else:
+        attribute_names = []
+        city_names = []
 
     new_excel_names = []
     for name in excel_names:
@@ -123,11 +131,13 @@ def load_initial_excel_files():
     all_files = glob.glob(path + "/*.csv")
     for filename in all_files:
         df = pd.read_csv(filename, index_col=None, header=0)
+        f = filename[filename.find('F'):]
+        f = f[0:6]
+        print(f)
+        df['FYQ'] = f
         _file_names.append(filename[filename.find('F'):])
         _saved_dataframes.append(df)
 
-    # print(saved_dataframes)
-    # print(file_names)
     return _saved_dataframes, _file_names
 
 # Save Data from recently gotten excel file
@@ -172,16 +182,9 @@ def save_data(file_name, fiscal_date):
             df.at[i-3, ws.range(
                 f'{j}2').value] = ws.range(f'{j}{i}').value
 
-    # city_values = ['D2']
 
-    # for i in range(0, len(city_cells)):
-    #     city_points = city_cells[i][1:]
-    #     total_points.append(ws.range(f'{city_values[0][0]}{city_points}').value)
-
-    # print(df)
-    # df.set_index("Cities")
     df.to_csv(f'static/stored-data/{fiscal_date}.csv')
-    #print(df)
+
     xl = xw.apps.active.api
     xl.Quit()
 
@@ -208,16 +211,14 @@ def split_fy(fy_list):
 # Split dataframes into checked cities and attributes
 def split_dataframe(dataframes, fiscal_years, cities, attributes):
     df_list = []
+    attributes.append('FYQ')
     for df in dataframes:
         df.set_index("Cities", inplace=True)
         df_list.append(df.loc[cities, attributes])
-        #print("done")
     
-    for i in range(len(fiscal_years)):
-        df_list[i]['FYQ'] = fiscal_years[i]
-        #print(df_list[i])
+    # for i in range(len(fiscal_years)):
+    #     df_list[i]['FYQ'] = fiscal_years[i]
 
-    #df2 = df.loc[cities, attributes]
     print("Split it")
     print(df_list[0])
     return df_list
@@ -229,15 +230,8 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
 
     df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
 
-    print("Here it is")
-    print(df_total)
-
     df_total = df_total.sort_values("FYQ")
 
-    #df_total = df_total.groupby(['Cities'])
-
-    #df_total.plot(x='FYQ', y=attributes)
-    #df_total.pivot(index='FYQ', columns=attributes, values=attributes).plot()
 
     city_att = []
 
@@ -256,10 +250,91 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
         gp.plot(x='FYQ', y=attributes, ax=ax, label=city_labels[i])
         i = i + 1
 
+
     
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
     im.show()
+
+
+def make_bar_graph(df_list, cities, attributes, fiscal_years):
+
+    df_total = pd.concat(df_list)
+
+    print(df_total)
+
+    df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
+
+    print(df_total)
+
+    df_total = df_total.sort_values("FYQ")
+
+    print("Here it is")
+    print(df_total)
+
+
+    city_att = []
+
+    city_labels = []
+
+    fig, ax = plt.subplots()
+    
+    for city, gp in df_total.groupby('Cities'):
+        for i in range(len(attributes)):
+            city_att.append(f'{city}: {attributes[i]}')
+        city_labels.append(city_att)
+        city_att = []
+     
+    i = 0
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot.bar(x='FYQ', y=attributes, label=city_labels[i])
+        i = i + 1
+
+    
+        plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+        im = Image.open('./static/images/graph.png')
+        im.show()
+
+
+
+def make_stacked_bar_graph(df_list, cities, attributes, fiscal_years):
+
+    df_total = pd.concat(df_list)
+
+    print(df_total)
+
+    df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
+
+    print(df_total)
+
+    df_total = df_total.sort_values("FYQ")
+
+    print("Here it is")
+    print(df_total)
+
+
+    city_att = []
+
+    city_labels = []
+
+    fig, ax = plt.subplots()
+    
+    for city, gp in df_total.groupby('Cities'):
+        for i in range(len(attributes)):
+            city_att.append(f'{city}: {attributes[i]}')
+        city_labels.append(city_att)
+        city_att = []
+    i = 0
+    for city, gp in df_total.groupby('Cities'):
+        gp.plot.bar(x='FYQ', y=attributes, label=city_labels[i], stacked=True)
+        i = i + 1
+
+    
+        plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
+        im = Image.open('./static/images/graph.png')
+        im.show()
+    
+
 
 
 def make_pie_chart(df_list, cities, attributes, fiscal_years):
@@ -268,15 +343,9 @@ def make_pie_chart(df_list, cities, attributes, fiscal_years):
 
     df_total = df_total[df_total['FYQ'].isin(fiscal_years)]
 
-    print("Here it is")
-    print(df_total)
-
     df_total = df_total.sort_values("FYQ")
     titles=df_total['FYQ'].to_list()
     df_total = df_total.drop('FYQ', 1)
-
-    print(type(df_total))
-
 
 
     df_total.T.plot.pie(subplots=True, figsize=(20, 3), legend=False, title=titles)
