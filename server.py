@@ -251,7 +251,7 @@ def make_line_graph(df_list, cities, attributes, fiscal_years):
         i = i + 1
 
 
-    
+    plt.legend(loc='upper right')
     plt.savefig('./static/images/graph.png', dpi=200, bbox_inches='tight')
     im = Image.open('./static/images/graph.png')
     im.show()
