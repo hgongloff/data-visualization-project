@@ -181,8 +181,12 @@ def save_data(file_name, fiscal_date):
         for i in range(3, 68):
             df.at[i-3, "Cities"] = ws.range(f'B{i}').value
             for j in 'CDEFGHIJKLMNOPRST':
+                val = 0
+                print(type(ws.range(f'{j}{i}').value))
+                if isinstance(ws.range(f'{j}{i}').value, float):
+                    val = ws.range(f'{j}{i}').value
                 df.at[i-3, ws.range(
-                    f'{j}2').value] = ws.range(f'{j}{i}').value
+                    f'{j}2').value] = val
 
 
         df.to_csv(f'static/stored-data/{fiscal_date}.csv')
