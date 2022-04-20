@@ -1,0 +1,12 @@
+I familarized myself with the documentation 
+
+I set up the simulator and got the watch whitelisted with my laptop
+
+I was able to deploy a few test apps directly to the watch and have gotten them running succesfully on the watch
+
+I found Documentation for the sensor data and have tested the Heart Rate and Accelerometer data so far. There appears to be some for GPS postition as well as Temperature, Pulse
+Oximetry, Speed, Magnetometer, Cadence, Altitude, Oxygen Saturation, and Heading but I havent tested these yet
+
+I have setup the watch for BLE connection but have not been able to test it since I have been having trouble setting up the Pi.
+
+I was able to follow the tutorial Adrian provided for the watch but the pi has been giving me a lot of trouble 

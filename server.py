@@ -45,7 +45,7 @@ def index():
         quarter = request.form.get('quarter')
         year = request.form.getlist('year')
         uploaded_file = request.files['file']
-        if uploaded_file.filename != '':
+        if uploaded_file.filename != '' and uploaded_file.filename.endswith('.xlsx'):
             print("Call file")
             uploaded_file.save(uploaded_file.filename)
             if int(year[0]) < 10:
@@ -153,42 +153,48 @@ def save_data(file_name, fiscal_date):
     # Selecting a sheet
     ws = wks[0]
 
-    city_cells = []
-    attribute_cells = []
-    cities = []
-    attributes = []
-    points = [[]]
-    total_points = []
+    if isinstance(ws.range(f'B1').value, str) and ws.range(f'B1').value.startswith('MEPS'):
 
-    for i in range(3, 68):
-        city_cells.append(f"B{i}")
+        city_cells = []
+        attribute_cells = []
+        cities = []
+        attributes = []
+        points = [[]]
+        total_points = []
 
-    for i in 'CDEFGHIJKLMNOPRST':
-        attribute_cells.append(f"{i}2")
+        for i in range(3, 68):
+            city_cells.append(f"B{i}")
 
-    for city_index in city_cells:
-        cities.append(ws.range(city_index).value)
+        for i in 'CDEFGHIJKLMNOPRST':
+            attribute_cells.append(f"{i}2")
 
-    attributes.append("Cities")
-    for attribute_index in attribute_cells:
-        attributes.append(ws.range(attribute_index).value)
+        for city_index in city_cells:
+            cities.append(ws.range(city_index).value)
 
-    df = pd.DataFrame(
-        columns=attributes)
-    
-    for i in range(3, 68):
-        df.at[i-3, "Cities"] = ws.range(f'B{i}').value
-        for j in 'CDEFGHIJKLMNOPRST':
-            df.at[i-3, ws.range(
-                f'{j}2').value] = ws.range(f'{j}{i}').value
+        attributes.append("Cities")
+        for attribute_index in attribute_cells:
+            attributes.append(ws.range(attribute_index).value)
+
+        df = pd.DataFrame(
+            columns=attributes)
+        
+        for i in range(3, 68):
+            df.at[i-3, "Cities"] = ws.range(f'B{i}').value
+            for j in 'CDEFGHIJKLMNOPRST':
+                df.at[i-3, ws.range(
+                    f'{j}2').value] = ws.range(f'{j}{i}').value
 
 
-    df.to_csv(f'static/stored-data/{fiscal_date}.csv')
+        df.to_csv(f'static/stored-data/{fiscal_date}.csv')
 
-    xl = xw.apps.active.api
-    xl.Quit()
+        xl = xw.apps.active.api
+        xl.Quit()
 
-    return df
+        return df
+    else:
+        xl = xw.apps.active.api
+        xl.Quit()
+        return 0
 
 def load_initial_cities_attributes(saved_dataframes):
     _attribute_names = saved_dataframes[0].columns.drop(["Unnamed: 0", "Cities"])
